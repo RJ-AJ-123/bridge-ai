@@ -1,0 +1,43 @@
+// Placeholder schema for the bootstrap slice (issue #01).
+// Only the `queries` table — enough to prove migrations run end-to-end.
+// Real Auth, ExtractedQuery, Report, Evidence, Entities land in issues #02–#11.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum QueryMode {
+  company
+  city
+}
+
+enum QueryState {
+  draft
+  extracting
+  extracted
+  confirmed
+  enriching
+  enriched
+  building_graph
+  scoring
+  rendering
+  done
+  cancelled
+  failed
+}
+
+model Query {
+  id        String     @id @default(uuid()) @db.Uuid
+  userId    String?    @map("user_id") @db.Uuid
+  mode      QueryMode
+  payload   Json       @map("payload_json")
+  state     QueryState @default(draft)
+  createdAt DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("queries")
+}

@@ -205,3 +205,31 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Node / pnpm
+node_modules/
+.pnpm-store/
+
+# Next.js
+.next/
+out/
+next-env.d.ts.bak
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Test artifacts
+playwright-report/
+test-results/
+coverage/
+.vitest-cache/
+
+# Prisma generated client (regenerated on install/build)
+**/generated/prisma/
+**/.prisma/
+
+# Local env files
+.env.local
+.env.development.local
+.env.production.local
+

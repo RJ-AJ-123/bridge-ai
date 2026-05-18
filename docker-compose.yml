@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: bridgeai-postgres
+    environment:
+      POSTGRES_USER: bridgeai
+      POSTGRES_PASSWORD: bridgeai
+      POSTGRES_DB: bridgeai
+    ports:
+      - "5432:5432"
+    volumes:
+      - bridgeai_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bridgeai -d bridgeai"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  bridgeai_pgdata:

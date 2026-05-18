@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm --version)",
+      "Bash(npm --version)",
+      "Bash(docker --version)",
+      "Bash(git --version)",
+      "Bash(corepack --version)",
+      "Bash(corepack enable *)",
+      "Bash(corepack prepare *)",
+      "Bash(export PATH=\"$HOME/.npm-global:$PATH\")",
+      "Bash(pnpm install *)",
+      "Bash(pnpm --filter frontend test)",
+      "Bash(pnpm typecheck *)",
+      "Bash(pnpm lint *)",
+      "Bash(export DATABASE_URL=\"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\")",
+      "Bash(pnpm exec *)"
+    ]
+  }
+}
