@@ -14,7 +14,14 @@
       "Bash(pnpm typecheck *)",
       "Bash(pnpm lint *)",
       "Bash(export DATABASE_URL=\"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\")",
-      "Bash(pnpm exec *)"
+      "Bash(pnpm exec *)",
+      "PowerShell($env:DATABASE_URL = \"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\"; pnpm --filter frontend exec vitest run app/api/queries/route.test.ts 2>&1 | Select-Object -Last 25)",
+      "PowerShell($env:DATABASE_URL = \"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\"; pnpm --filter frontend exec vitest run app/api/queries/route.test.ts 2>&1 | Select-Object -Last 12)",
+      "PowerShell($env:DATABASE_URL = \"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\"; pnpm --filter frontend exec vitest run app/api/queries/route.get.test.ts 2>&1 | Select-Object -Last 10)",
+      "PowerShell($env:DATABASE_URL = \"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\"; pnpm --filter frontend exec vitest run 'app/api/queries/[id]/route.test.ts' 2>&1 | Select-Object -Last 15)",
+      "PowerShell($env:DATABASE_URL = \"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\"; pnpm --filter frontend exec vitest run 'app/api/queries/[id]/route.test.ts' 2>&1 | Select-Object -Last 10)",
+      "PowerShell($env:DATABASE_URL = \"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\"; pnpm --filter frontend exec vitest run 2>&1 | Select-Object -Last 40)",
+      "PowerShell(docker compose up -d postgres 2>&1)"
     ]
   }
 }

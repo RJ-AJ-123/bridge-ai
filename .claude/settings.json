@@ -2,7 +2,41 @@
   "permissions": {
     "allow": [
       "Bash(pnpm --filter frontend build)",
-      "Bash(docker compose *)"
+      "Bash(docker compose *)",
+      "Bash(DATABASE_URL=postgresql://bridgeai:bridgeai@localhost:5432/bridgeai pnpm prisma:migrate:deploy)",
+      "PowerShell($env:DATABASE_URL = \"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\"; pnpm prisma:migrate:deploy 2>&1 | Select-Object -Last 25)",
+      "PowerShell(Get-Command pnpm -ErrorAction SilentlyContinue; Get-Command npx -ErrorAction SilentlyContinue; Get-Command npm -ErrorAction SilentlyContinue; \\(Get-Command node\\).Source)",
+      "PowerShell(corepack enable 2>&1)",
+      "PowerShell(Get-Command pnpm -ErrorAction SilentlyContinue)",
+      "Read(//c/Users/19144/AppData/Local/pnpm//**)",
+      "Read(//c/Users/19144/AppData/Roaming/npm//**)",
+      "PowerShell($env:DATABASE_URL = \"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\"; corepack pnpm prisma:migrate:deploy 2>&1 | Select-Object -Last 30)",
+      "PowerShell(corepack pnpm prisma:generate 2>&1)",
+      "PowerShell($env:DATABASE_URL = \"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\"; $env:Path = \"C:\\\\Program Files\\\\nodejs;\" + $env:Path; corepack pnpm prisma:generate 2>&1 | Select-Object -Last 15)",
+      "PowerShell($env:DATABASE_URL = \"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\"; npx --prefix frontend prisma generate --schema=./prisma/schema.prisma 2>&1 | Select-Object -Last 15)",
+      "PowerShell($env:DATABASE_URL = \"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\"; Set-Location frontend; npx prisma generate --schema=../prisma/schema.prisma 2>&1 | Select-Object -Last 15)",
+      "PowerShell(corepack enable pnpm 2>&1 | Out-String; Get-Command pnpm -ErrorAction SilentlyContinue; \\(Get-Command corepack\\).Source)",
+      "PowerShell(npm install -g pnpm@9.15.9 2>&1)",
+      "PowerShell(Get-Command pnpm; $env:DATABASE_URL = \"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\"; pnpm prisma:generate 2>&1 | Select-Object -Last 10)",
+      "PowerShell(pnpm install 2>&1)",
+      "PowerShell($env:DATABASE_URL = \"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\"; pnpm prisma:generate 2>&1 | Select-Object -Last 15)",
+      "PowerShell($env:DATABASE_URL = \"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\"; pnpm --filter frontend exec vitest run lib/auth/sessions.test.ts 2>&1 | Select-Object -Last 30)",
+      "PowerShell($env:DATABASE_URL = \"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\"; pnpm --filter frontend exec vitest run lib/auth/sessions.test.ts 2>&1 | Select-Object -Last 20)",
+      "PowerShell($env:DATABASE_URL = \"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\"; pnpm --filter frontend exec vitest run lib/auth/sessions.test.ts 2>&1 | Select-Object -Last 10)",
+      "PowerShell($env:DATABASE_URL = \"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\"; pnpm --filter frontend exec vitest run lib/auth/magic-link.test.ts 2>&1 | Select-Object -Last 15)",
+      "PowerShell($env:DATABASE_URL = \"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\"; pnpm --filter frontend exec vitest run lib/auth/magic-link.test.ts 2>&1 | Select-Object -Last 10)",
+      "PowerShell($env:DATABASE_URL = \"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\"; pnpm --filter frontend exec vitest run lib/auth/magic-link.test.ts 2>&1 | Select-Object -Last 12)",
+      "PowerShell($env:DATABASE_URL = \"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\"; pnpm --filter frontend exec vitest run lib/queries/repository.test.ts 2>&1 | Select-Object -Last 15)",
+      "PowerShell(Get-Process \"Docker Desktop\" -ErrorAction SilentlyContinue)",
+      "PowerShell($deadline = \\(Get-Date\\).AddSeconds\\(120\\); $ok = $false; while \\(\\(Get-Date\\) -lt $deadline\\) { docker ps 2>&1 | Out-Null; if \\($LASTEXITCODE -eq 0\\) { $ok = $true; break }; Start-Sleep -Seconds 3 }; if \\($ok\\) { \"docker-ready\" } else { \"docker-timeout\" })",
+      "PowerShell($deadline = \\(Get-Date\\).AddSeconds\\(45\\); while \\(\\(Get-Date\\) -lt $deadline\\) { docker exec bridgeai-postgres pg_isready -U bridgeai -d bridgeai 2>&1 | Out-Null; if \\($LASTEXITCODE -eq 0\\) { \"ready\"; break }; Start-Sleep -Seconds 2 })",
+      "PowerShell($env:DATABASE_URL = \"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\"; pnpm --filter frontend exec vitest run 2>&1 | Select-Object -Last 25)",
+      "PowerShell($env:DATABASE_URL = \"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\"; pnpm --filter frontend exec vitest run app/api/auth/callback 2>&1 | Select-Object -Last 15)",
+      "PowerShell($env:DATABASE_URL = \"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\"; pnpm --filter frontend exec vitest run app/api/auth/callback 2>&1 | Select-Object -Last 10)",
+      "PowerShell($env:DATABASE_URL = \"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\"; pnpm --filter frontend exec vitest run app/api/auth/sign-out 2>&1 | Select-Object -Last 10)",
+      "PowerShell(pnpm --filter frontend lint 2>&1)",
+      "PowerShell(pnpm --filter frontend typecheck 2>&1)",
+      "PowerShell($env:DATABASE_URL = \"postgresql://bridgeai:bridgeai@localhost:5432/bridgeai\"; pnpm prisma:migrate:deploy 2>&1 | Select-Object -Last 10)"
     ]
   }
 }

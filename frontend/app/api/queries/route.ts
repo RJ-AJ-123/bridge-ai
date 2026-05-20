@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+import { getUserFromRequest } from "@/lib/auth/middleware";
+import { createQuery, listQueries } from "@/lib/queries/repository";
 import { buildStubReport, type QueryMode } from "@/lib/stub-report";
 
 type QueryPayload = {
@@ -16,6 +18,11 @@ function isValidPayload(value: unknown): value is QueryPayload {
 }
 
 export async function POST(request: Request): Promise<Response> {
+  const session = await getUserFromRequest(request);
+  if (!session) {
+    return NextResponse.json({ error: "authentication required" }, { status: 401 });
+  }
+
   let payload: unknown;
   try {
     payload = await request.json();
@@ -30,8 +37,33 @@ export async function POST(request: Request): Promise<Response> {
     );
   }
 
+  const row = await createQuery({
+    userId: session.userId,
+    mode: payload.mode,
+    payload: { goal: payload.goal },
+  });
+
   return NextResponse.json({
+    queryId: row.id,
     echo: { mode: payload.mode, goal: payload.goal },
     report: buildStubReport(payload),
+  });
+}
+
+export async function GET(request: Request): Promise<Response> {
+  const session = await getUserFromRequest(request);
+  if (!session) {
+    return NextResponse.json({ error: "authentication required" }, { status: 401 });
+  }
+
+  const queries = await listQueries(session.userId);
+  return NextResponse.json({
+    queries: queries.map((q) => ({
+      id: q.id,
+      mode: q.mode,
+      state: q.state,
+      payload: q.payload,
+      createdAt: q.createdAt.toISOString(),
+    })),
   });
 }
