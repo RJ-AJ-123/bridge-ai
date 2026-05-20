@@ -1,6 +1,7 @@
-// Schema for the auth + query-history slice (issue #02).
-// Adds: users, sessions, magic_link_tokens. Promotes queries.user_id to NOT NULL FK.
-// ExtractedQuery, Report, Evidence, Entities land in later slices (#03–#11).
+// Schema for the auth + query-history slice (issue #02) plus the Company-mode
+// intake + Extract preview slice (issue #03).
+// Adds: users, sessions, magic_link_tokens (#02), extracted_queries (#03).
+// Report, Evidence, Entities land in later slices (#04–#11).
 
 generator client {
   provider = "prisma-client-js"
@@ -78,6 +79,22 @@ model Query {
   state     QueryState @default(draft)
   createdAt DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
 
+  extracted ExtractedQuery?
+
   @@index([userId, createdAt(sort: Desc)])
   @@map("queries")
+}
+
+/// Stage 1 output. One per Query (1:1). User-editable before Stage 2 runs;
+/// `confirmedAt` is set when the User confirms the preview.
+model ExtractedQuery {
+  queryId      String    @id @map("query_id") @db.Uuid
+  query        Query     @relation(fields: [queryId], references: [id], onDelete: Cascade)
+  extracted    Json      @map("extracted_json")
+  userEdited   Boolean   @default(false) @map("user_edited")
+  confirmedAt  DateTime? @map("confirmed_at") @db.Timestamptz(6)
+  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("extracted_queries")
 }

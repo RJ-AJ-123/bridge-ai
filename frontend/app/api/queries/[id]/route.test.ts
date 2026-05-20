@@ -3,6 +3,8 @@ import { afterAll, beforeEach, describe, expect, it } from "vitest";
 import { SESSION_COOKIE } from "@/lib/auth/middleware";
 import { createSession } from "@/lib/auth/sessions";
 import { prisma } from "@/lib/db";
+import { upsertExtracted } from "@/lib/extract/repository";
+import type { ExtractedQueryCompany } from "@/lib/extract/types";
 import { createQuery } from "@/lib/queries/repository";
 import { resetAuthAndQueries } from "@/lib/test-utils/db";
 
@@ -69,5 +71,38 @@ describe("GET /api/queries/:id (cross-user isolation)", () => {
       params: { id: "11111111-1111-1111-1111-111111111111" },
     });
     expect(res.status).toBe(404);
+  });
+
+  it("includes the ExtractedQuery preview when one exists for the query", async () => {
+    const alice = await authedUser("alice@example.com");
+    const q = await createQuery({ userId: alice.userId, mode: "company", payload: { goal: "g" } });
+    const extracted: ExtractedQueryCompany = {
+      mode: "company",
+      target: { kind: "company", name: "Acme Corp", url: "https://acme.example" },
+      goalRestated: "Sell AI to Acme",
+      parsedKnownRelationships: [{ displayName: "Person C" }],
+      signals: { budgetLowerUsd: 30000 },
+      unknowns: ["preferred-decision-role"],
+    };
+    await upsertExtracted({ queryId: q.id, extracted, userEdited: false });
+
+    const res = await GET(getRequest(q.id, alice.cookie), { params: { id: q.id } });
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body.query.id).toBe(q.id);
+    expect(body.extracted).not.toBeNull();
+    expect(body.extracted.value.target.name).toBe("Acme Corp");
+    expect(body.extracted.userEdited).toBe(false);
+    expect(body.extracted.confirmedAt).toBeNull();
+  });
+
+  it("returns extracted: null when no preview has been generated yet", async () => {
+    const alice = await authedUser("alice@example.com");
+    const q = await createQuery({ userId: alice.userId, mode: "company", payload: { goal: "g" } });
+
+    const res = await GET(getRequest(q.id, alice.cookie), { params: { id: q.id } });
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body.extracted).toBeNull();
   });
 });

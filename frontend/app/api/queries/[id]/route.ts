@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { getUserFromRequest } from "@/lib/auth/middleware";
+import { getExtractedForUser } from "@/lib/extract/repository";
 import { getQuery } from "@/lib/queries/repository";
 
 type Context = { params: { id: string } };
@@ -16,6 +17,8 @@ export async function GET(request: Request, ctx: Context): Promise<Response> {
     return NextResponse.json({ error: "not found" }, { status: 404 });
   }
 
+  const extracted = await getExtractedForUser({ queryId: row.id, userId: session.userId });
+
   return NextResponse.json({
     query: {
       id: row.id,
@@ -24,5 +27,12 @@ export async function GET(request: Request, ctx: Context): Promise<Response> {
       payload: row.payload,
       createdAt: row.createdAt.toISOString(),
     },
+    extracted: extracted
+      ? {
+          value: extracted.extracted,
+          userEdited: extracted.userEdited,
+          confirmedAt: extracted.confirmedAt?.toISOString() ?? null,
+        }
+      : null,
   });
 }
